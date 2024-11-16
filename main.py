@@ -54,8 +54,8 @@ def main():
         team_table = wb_config.extract_table_data(team, team_rows, team_cols, initial_row=2)
 
         # Get specific cell values
-        month_period = period['D5'].value
-        year_period = period['D6'].value
+        month_period = period['D5'].value # Needs to be modified
+        year_period = period['D6'].value # Needs to be modified
         raw_file_name = period['C13'].value
         work_breakdown_structure = period['C18'].value
         last_item_number = period['C23'].value
