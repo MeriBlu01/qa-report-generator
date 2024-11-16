@@ -119,9 +119,7 @@ def main():
             team_type = team_table[3][row_match_idx]
             module = team_table[4][row_match_idx]
 
-            
-            if cf.validate_team_member([peer_reviewer, team_type, module], created_by) == False:
-                report_wb.creation_flag = False
+            report_wb.creation_flag = cf.validate_team_member([peer_reviewer, team_type, module], created_by)
 
             ''' ITERATE PER ROW '''
             for row in range(rows_data):
@@ -254,7 +252,7 @@ def main():
                                 else: delivery_type = catalogue['Release/Build'][1]
                                 
                                 # Complete %
-                                if catalogue['Requirement Type'][x] == 'Test Execution & Reporting' and item_type != 'Bug' and item_type != 'Adhoc':
+                                if catalogue['Requirement Type'][x] == 'Test Execution & Reporting' and item_type != 'Bug':
                                     try:
                                         suma_values = pass_record + fail + cant_test
                                         check = round(suma_values / total, 1)
@@ -396,6 +394,13 @@ def main():
         print("\nAn unexpected error occurred.")
         print(f"Error details: {e}")
 
+    finally:
+        if report_wb.creation_flag == True:
+            print(f"\nNew Report saved as: {report_wb.report_filename}")
+            logging.warning(f"New Report saved as: {report_wb.report_filename}")
+        else:
+            logging.warning(f"Report file wasn't created.")
+            print(f"\nReport file wasn't created, please review the 'error_log.txt' file for more details.")
 
 if __name__ == "__main__":
     main()
