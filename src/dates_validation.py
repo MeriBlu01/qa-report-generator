@@ -38,7 +38,7 @@ class DatesValidator:
         :param start_date: The start date string that will be formatted.
         :param end_date: The end date string that will be formatted.
         :param team_member: The team member owner of the dates reported, for logging purposes.
-        :param row: The row where the dates will be found.
+        :param row: The row where the dates will be found, for logging purposes.
         """
 
         if isinstance(start_date, datetime) and isinstance(end_date, datetime):
@@ -98,10 +98,32 @@ class DatesValidator:
         parsed_date = datetime.strptime(date, '%m/%d/%Y')
 
         # Extract the month number
-        # month = parsed_date.month
+        month = parsed_date.month
 
         # Get the full month name
-        month = parsed_date.strftime('%B')
+        # month = parsed_date.strftime('%B')
+
         # Get the year
         year = parsed_date.year
         return month, year
+    
+    @staticmethod
+    def date_within_period_inclusive(initial_date, final_date, input_date):
+        """Check if the date lies within the range (inclusive).
+
+        :param initial_date: The start date of the filter period.
+        :param final_date: The end date of the filter period.
+        :param input_date: The date that will be checked (inclusive).
+        """
+
+        # Convert all dates to datetime objects
+        # All dates values are strings in 'MM/DD/YYYY' format
+        check_date = datetime.strptime(input_date, "%m/%d/%Y")
+        start_date = datetime.strptime(initial_date, "%m/%d/%Y")
+        end_date = datetime.strptime(final_date, "%m/%d/%Y")
+
+        # Check if the date lies within the range (inclusive)
+        if start_date <= check_date <= end_date:
+            return True
+        else:
+            return False

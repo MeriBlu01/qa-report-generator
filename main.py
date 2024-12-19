@@ -54,8 +54,8 @@ def main():
         team_table = wb_config.extract_table_data(team, team_rows, team_cols, initial_row=2)
 
         # Get specific cell values
-        month_period = period['D5'].value # Needs to be modified
-        year_period = period['D6'].value # Needs to be modified
+        initial_date = period['D5'].value # Needs to be modified
+        final_date = period['D6'].value # Needs to be modified
         raw_file_name = period['C13'].value
         work_breakdown_structure = period['C18'].value
         last_item_number = period['C23'].value
@@ -191,8 +191,16 @@ def main():
                             else: 
                                 valid_date = True
 
-                            month_name, year = DatesValidator.get_date_to_filter(start_date)
-                            if month_name == month_period and year == year_period and valid_date == True:
+                            """
+                            The initial_date and final_date variables must be processed to ensure that they are a valid period date 
+                            and are in the correct format.
+                            """
+                            fmt_initial_date, fmt_final_date = DatesValidator.format_date(initial_date, final_date, created_by, row)
+
+                            date_validation = DatesValidator.date_within_period_inclusive(fmt_initial_date, fmt_final_date, start_date)
+                             
+
+                            if valid_date and date_validation:
 
                                 # Request No Generator
                                 req_id = cf.req_number_generator(project_id[7:], item_count)
